@@ -1,6 +1,7 @@
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, g, request ##
 from app import app
 from forms import TaskForm
+import json ##
 
 # rethink imports
 import rethinkdb as r
@@ -40,12 +41,8 @@ def teardown_request(exception):
     except AttributeError:
         pass
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route("/")
 def index():
-	form = TaskForm()
-	if form.validate_on_submit():
-		task = Task(label = form.label.data)
-		task.save()
-		return redirect(url_for('index'))
-
-	return render_template('index.html', form = form)
+    form = TaskForm()
+    selection = list(r.table('todos').run(g.rdb_conn))
+    return render_template('index.html', form=form, tasks=selection)
