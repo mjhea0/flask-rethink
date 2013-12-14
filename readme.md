@@ -1,6 +1,6 @@
 # Rethink Flask: A Simple todo list powered by Flask and RethinkDB
 
-After a number of requests for a basic [Flask](http://flask.pocoo.org/) and [RethinkDB](http://www.rethinkdb.com/) template, I decided to go ahead and write a blog post. 
+After a number of requests for a basic [Flask](http://flask.pocoo.org/) and [RethinkDB](http://www.rethinkdb.com/) template, I decided to go ahead and write a blog post. This is that post.
 
 > BTW: We always welcome requests. If you have something you'd like us to write about, shoot us an email, comment on another blog post, or just tackle us on the street.
 
