@@ -245,11 +245,11 @@ The current app is functional, but there's a lot more we can do. Take this app t
 
 Here's a few ideas:
 
-1. Add user login.
-2. Create a more robust form, where you can add a due date for each todo, and then sort the todos by that date.
+1. Add a user login.
+2. Create a more robust form, where you can add a due date for each todo, and then sort the todos by that date before rendering them to the DOM.
 3. Add functional and unit tests.
 4. Add the ability to create sub tasks for each task.
-5. Read over the API reference Check the API [docs](http://www.rethinkdb.com/api/python/). Play around with various methods.
+5. Read over the API reference [docs](http://www.rethinkdb.com/api/python/). Play around with various methods.
 6. Moduralize the app.
 7. Refactor the code. Show off your new code to RethinkDB.
 
