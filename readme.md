@@ -10,7 +10,7 @@ Today we'll be creating a *simple* todo list, which you'll be able to modify to 
 
 1. Install
 
-  Navigate [here](http://www.rethinkdb.com/docs/install/) and download the appropriate package for your system. I used Homebrew - `$ brew install rethinkdb`, and it took almost twenty minutes to download and install the build:
+  Navigate [here](http://www.rethinkdb.com/docs/install/) and download the appropriate package for your system. I used Homebrew - `$ brew install rethinkdb` - and it took almost twenty minutes to download and install the build:
   
   ```sh
   ==> Installing rethinkdb
