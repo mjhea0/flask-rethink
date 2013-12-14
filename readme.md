@@ -33,7 +33,7 @@ Today we'll be creating a *simple* todo list, which you'll be able to modify to 
 $ sudo pip install rethinkdb
 ```
 
-> Note: I installed Rethink globally (outside of a virtualenv) since I'll probably use the same version with a number of projects, with a number of different languages.
+  > Note: I installed Rethink globally (outside of a virtualenv) since I'll probably use the same version with a number of projects, with a number of different languages.
 
 3. Test
 
@@ -124,7 +124,7 @@ $ python app.py
 
 ![main](https://raw.github.com/mjhea0/flask-rethink/master/main.png)
 
-Don't try to submit anything yet, because we need to get a database setup first. RethinkDB time.
+Don't try to submit anything yet, because we need to get a database setup first. Let's get RethinkDB going.
 
 ## RethinkDB Config
 
@@ -138,12 +138,10 @@ pip install rethinkdb
 # rethink imports
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
-
 # rethink config
 RDB_HOST =  'localhost'
 RDB_PORT = 28015
 TODO_DB = 'todo'
-
 # db setup; only run once
 def dbSetup():
     connection = r.connect(host=RDB_HOST, port=RDB_PORT)
@@ -156,7 +154,6 @@ def dbSetup():
     finally:
         connection.close()
 dbSetup()
-
 # open connection before each request
 @app.before_request
 def before_request():
@@ -164,7 +161,6 @@ def before_request():
         g.rdb_conn = r.connect(host=RDB_HOST, port=RDB_PORT, db=TODO_DB)
     except RqlDriverError:
         abort(503, "Database connection could be established.")
-
 # close the connection after each request
 @app.teardown_request
 def teardown_request(exception):
@@ -174,74 +170,74 @@ def teardown_request(exception):
         pass
 ```
 
-Check the comments for a brief explanation on what each of these functions do.
+  Check the comments for a brief explanation on what each of these functions do.
 
 3. Start your server again. You should see the following alert in your terminal:
 ```sh
 Database setup completed
 ```
 
-> If you see this error `rethinkdb.errors.RqlDriverError: Could not connect to localhost:28015.` your RethinkDB server is not running. Open up a new terminal window and run `$ rethinkdb`.
+  > If you see this error `rethinkdb.errors.RqlDriverError: Could not connect to localhost:28015.` your RethinkDB server is not running. Open up a new terminal window and run `$ rethinkdb`.
 
-So, we created a new database called "todo", which has a table called "todos".
+  So, we created a new database called "todo", which has a table called "todos".
 
-You can verify this in the RethinkDB Admin. Navigate to [http://localhost:8080/](http://localhost:8080/). The admin should load. If you click "Tables", you should see the database and table we created:
+  You can verify this in the RethinkDB Admin. Navigate to [http://localhost:8080/](http://localhost:8080/). The admin should load. If you click "Tables", you should see the database and table we created:
 
-![rethink-admin](https://raw.github.com/mjhea0/flask-rethink/master/rethink-admin.png)
+  ![rethink-admin](https://raw.github.com/mjhea0/flask-rethink/master/rethink-admin.png)
 
 3. Display Todos
 
-With the database setup, let's add code to display todos. Update the `index()` function in "views.py":
+  With the database setup, let's add code to display todos. Update the `index()` function in "views.py":
 
-```python
-@app.route("/")
-def index():
-    form = TaskForm()
-    selection = list(r.table('todos').run(g.rdb_conn))
-    return render_template('index.html', form=form, tasks=selection)
-```
+  ```python
+  @app.route("/")
+  def index():
+      form = TaskForm()
+      selection = list(r.table('todos').run(g.rdb_conn))
+      return render_template('index.html', form=form, tasks=selection)
+  ```
 
-Here we're selecting the "todos" table, pulling all of the data, which is in JSON, and passing the entire table to the template.
+  Here we're selecting the "todos" table, pulling all of the data, which is in JSON, and passing the entire table to the template.
 
 4. Add data manually
 
-Before we can view any todos, we need to add some first. Let's go through the shell and add them in manually.
+  Before we can view any todos, we need to add some first. Let's go through the shell and add them in manually.
 
-```python
-$ python
->>> import rethinkdb
->>> conn = rethinkdb.connect(db='todo')
->>> rethinkdb.table('todos').insert({'name':'sail to the moon'}).run(conn)
-{u'errors': 0, u'deleted': 0, u'generated_keys': [u'c5562325-c5a1-4a78-8232-c0de4f500aff'], u'unchanged': 0, u'skipped': 0, u'replaced': 0, u'inserted': 1}
->>> rethinkdb.table('todos').insert({'name':'jump in the ocean'}).run(conn)
-{u'errors': 0, u'deleted': 0, u'generated_keys': [u'0a3e3658-4513-48cb-bc68-5af247269ee4'], u'unchanged': 0, u'skipped': 0, u'replaced': 0, u'inserted': 1}
->>> rethinkdb.table('todos').insert({'name':'think of another todo'}).run(conn)
-{u'errors': 0, u'deleted': 0, u'generated_keys': [u'b154a036-3c3b-47f4-89ec-cb9f4eff5f5a'], u'unchanged': 0, u'skipped': 0, u'replaced': 0, u'inserted': 1}
->>>
-```
+  ```python
+  $ python
+  >>> import rethinkdb
+  >>> conn = rethinkdb.connect(db='todo')
+  >>> rethinkdb.table('todos').insert({'name':'sail to the moon'}).run(conn)
+  {u'errors': 0, u'deleted': 0, u'generated_keys': [u'c5562325-c5a1-4a78-8232-c0de4f500aff'], u'unchanged': 0, u'skipped': 0, u'replaced': 0, u'inserted': 1}
+  >>> rethinkdb.table('todos').insert({'name':'jump in the ocean'}).run(conn)
+  {u'errors': 0, u'deleted': 0, u'generated_keys': [u'0a3e3658-4513-48cb-bc68-5af247269ee4'], u'unchanged': 0, u'skipped': 0, u'replaced': 0, u'inserted': 1}
+  >>> rethinkdb.table('todos').insert({'name':'think of another todo'}).run(conn)
+  {u'errors': 0, u'deleted': 0, u'generated_keys': [u'b154a036-3c3b-47f4-89ec-cb9f4eff5f5a'], u'unchanged': 0, u'skipped': 0, u'replaced': 0, u'inserted': 1}
+  >>>
+  ```
 
-So, we connected to the database, then entered three new objects into the table within the database. *Check the API [docs](http://www.rethinkdb.com/api/python/) for more information.*
+  So, we connected to the database, then entered three new objects into the table within the database. *Check the API [docs](http://www.rethinkdb.com/api/python/) for more information.*
 
-Fire up the server. You should now see the three tasks:
+  Fire up the server. You should now see the three tasks:
 
-![tasks](https://raw.github.com/mjhea0/flask-rethink/master/tasks.png)
+  ![tasks](https://raw.github.com/mjhea0/flask-rethink/master/tasks.png)
 
 5. Finalize the form
 
-Update the `index()` function again to pull the data from the form and add it to the database:
+  Update the `index()` function again to pull the data from the form and add it to the database:
 
-```python
-@app.route('/', methods = ['GET', 'POST'])
-def index():
-        form = TaskForm()
-        if form.validate_on_submit(): 
-                r.table('todos').insert({"name":form.label.data}).run(g.rdb_conn)
-                return redirect(url_for('index'))
-        selection = list(r.table('todos').run(g.rdb_conn))
-        return render_template('index.html', form = form, tasks = selection)
-```
+  ```python
+  @app.route('/', methods = ['GET', 'POST'])
+  def index():
+      form = TaskForm()
+          if form.validate_on_submit(): 
+              r.table('todos').insert({"name":form.label.data}).run(g.rdb_conn)
+              return redirect(url_for('index'))
+          selection = list(r.table('todos').run(g.rdb_conn))
+          return render_template('index.html', form = form, tasks = selection)
+  ```
 
-Test this out. Add some todos. Go crazy.
+  Test this out. Add some todos. Go crazy.
 
 ## Challenges
 
