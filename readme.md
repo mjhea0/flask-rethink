@@ -2,7 +2,7 @@
 
 After a number of requests for a basic [Flask](http://flask.pocoo.org/) and [RethinkDB](http://www.rethinkdb.com/) template, I decided to go ahead and write a blog post. This is that post.
 
-> BTW: We always welcome requests. If you have something you'd like us to write about, shoot us an email, comment on another blog post, or just tackle us on the street.
+> BTW: We always welcome requests. If you have something you'd like us to write about, or build, shoot us an email.
 
 Today we'll be creating a *simple* todo list, which you'll be able to modify to meet your own needs. Before beginning, I highly suggest reading over [this](http://www.rethinkdb.com/docs/rethinkdb-vs-mongodb/) article, which details how RethinkDB differs from some of the other NoSQL databases.
 
